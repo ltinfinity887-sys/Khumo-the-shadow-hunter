@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Khumo: The Shadow Minister</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    h1, h2, h3 {
+      font-family: 'Impact', 'Arial Black', sans-serif;
+      letter-spacing: 1px;
+      color: #be2626;
+    }
+    a { color: inherit; text-decoration: none; }
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: url('https://www.transparenttextures.com/patterns/noise.png');
+      opacity: 0.08;
+      pointer-events: none;
+      z-index: 1000;
+    }
+    nav {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.9);
+      padding: 10px 20px;
+      display: flex;
+      justify-content: center;
+      z-index: 999;
+    }
+    nav a {
+      margin: 0 15px;
+      padding-bottom: 4px;
+      border-bottom: 2px solid transparent;
+      transition: 0.3s;
+    }
+    nav a:hover, nav a.active {
+      border-color: #be2626;
+    }
+    .hero {
+      height: 100vh;
+      background: url('politic.png') no-repeat center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      position: relative;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      padding: 20px;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    }
+    .hero p {
+      font-size: 1.3rem;
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeInUp 3s forwards;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .scroll-down {
+      position: absolute;
+      bottom: 20px;
+      font-size: 1.5rem;
+      color: #aaa;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .section {
+      padding: 80px 20px;
+      max-width: 1100px;
+      margin: auto;
+    }
+    .characters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .card {
+      background: #111;
+      border: 1px solid #333;
+      width: 300px;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 15px #be2626;
+    }
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .timeline {
+      position: relative;
+      margin: 50px 0;
+      padding: 0;
+    }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 100%;
+      background: #be2626;
+    }
+    .timeline-item {
+      position: relative;
+      width: 50%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .timeline-item.left { left: 0; text-align: right; }
+    .timeline-item.right { left: 50%; }
+    .timeline-item .content {
+      background: #111;
+      border: 1px solid #333;
+      padding: 15px;
+      border-radius: 6px;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+    .timeline-item:hover .content {
+      transform: scale(1.03);
+    }
+    .timeline-item .date {
+      font-weight: bold;
+      color: #be2626;
+      margin-bottom: 10px;
+    }
+    .themes {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      justify-items: center;
+    }
+    .theme-card {
+      background: #111;
+      border: 2px solid #be2626;
+      border-radius: 10px;
+      padding: 20px;
+      width: 90%;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .theme-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 0 15px #be2626;
+    }
+    .theme-icon {
+      font-size: 50px;
+      color: #be2626;
+      margin-bottom: 10px;
+    }
+    .theme-card h3 {
+      margin-bottom: 10px;
+    }
+    .typewriter {
+      text-align: center;
+      font-size: 1.2rem;
+      margin-top: 20px;
+      border-right: 2px solid #be2626;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 0;
+      animation: typing 6s steps(60) forwards, blink 0.7s infinite;
+    }
+    @keyframes typing {
+      to { width: 100%; }
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+    .evidence-board {
+      padding: 100px 20px;
+      background: #111;
+    }
+    .evidence-board h2 {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .board-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+    .evidence-item {
+      background: #222;
+      border: 2px solid #be2626;
+      padding: 15px;
+      width: 200px;
+      height: 200px;
+      position: relative;
+      cursor: zoom-in;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+    /* FIXED: Ensure image fits perfectly */
+    .evidence-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 6px;
+      transition: transform 0.3s ease;
+    }
+    .evidence-item:hover img {
+      transform: scale(1.1);
+    }
+    footer {
+      background: #111;
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    /* Modal Base */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: #111;
+      border: 2px solid #be2626;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 700px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+    }
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 1.8rem;
+      color: #be2626;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: #ff5252;
+    }
+
+    /* Character Modal */
+    .character-modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.95);
+      overflow-y: auto;
+    }
+    .character-modal-content {
+      background: #111;
+      border: 2px solid #be2626;
+      padding: 30px;
+      border-radius: 8px;
+      max-width: 800px;
+      margin: 50px auto;
+      text-align: left;
+      position: relative;
+    }
+    .character-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .character-header img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #be2626;
+      margin-right: 20px;
+    }
+    .character-info h3 {
+      color: #be2626;
+      margin: 0 0 5px 0;
+      font-size: 2rem;
+    }
+    .character-role {
+      color: #aaa;
+      font-style: italic;
+      margin: 0 0 10px 0;
+    }
+    .character-bio {
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .character-quote {
+      font-style: italic;
+      color: #be2626;
+      border-left: 3px solid #be2626;
+      padding-left: 15px;
+      margin: 20px 0;
+    }
+    .theme-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+    }
+    .theme-tag {
+      background: #222;
+      color: #be2626;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      border: 1px solid #be2626;
+    }
+
+    /* PDF Container Styling */
+    .pdf-section {
+      max-width: 900px;
+      margin: 30px auto;
+      border: 1px solid #333;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .pdf-section embed {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+
+    /* Audio Controls */
+    .audio-controls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px auto;
+      flex-wrap: wrap;
+    }
+    .audio-btn, .pause-btn {
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-align: center;
+      cursor: pointer;
+      border: 2px solid #be2626;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .audio-btn {
+      background: #03dac6;
+      color: black;
+    }
+    .audio-btn:hover {
+      background: #02b8a8;
+      transform: translateY(-2px);
+    }
+    .pause-btn {
+      background: #cf6679;
+      color: white;
+    }
+    .pause-btn:hover {
+      background: #b05967;
+      transform: translateY(-2px);
+    }
+    #leaked-audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <a href="#home" class="active">Home</a>
+  <a href="#Confidential leak">Confidential leak</a>
+  <a href="#characters">Characters</a>
+  <a href="#timeline">Timeline</a>
+  <a href="#themes">Themes</a>
+  <a href="#evidence">Evidence Board</a>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <h1>KHUMO: THE SHADOW MINISTER</h1>
+    <p>"An investigation into power, loyalty, and the story South Africa chose to believe."</p>
+  </div>
+  <div class="scroll-down">▼</div>
+</section>
+
+<!-- CONFIDENTIAL LEAKED DOCUMENT - TEASER WITH EMBEDDED PDF AND AUDIO CONTROLS -->
+<section class="section" id="teaser">
+  <h2>CONFIDENTIAL LEAK: OPERATION SHADOW MINISTER</h2>
+  <div style="max-width: 900px; margin: 0 auto; padding: 20px; background: #1a1a1a; border: 1px solid #be2626; border-radius: 8px; box-shadow: 0 0 15px rgba(190, 38, 38, 0.3);">
+    
+    <!-- Classification Label -->
+    <p style="color: #03dac6; font-size: 0.9rem; text-align: right; margin: 0;">CLASSIFIED • ACCESS LEVEL: ALPHA</p>
+
+    <!-- Headline -->
+    <h3 style="color: #cf6679; margin: 15px 0;">MINISTER UNDER INVESTIGATION</h3>
+
+    <!-- Body Text -->
+    <p style="line-height: 1.7; font-size: 1.1rem;">
+      On January 14, 2025, an internal memo labeled <strong>"Project Umthombo"</strong> was leaked to select journalists. It alleges Deputy Minister Khumo Khala maintained undisclosed ties to foreign political actors in Blantyre. No evidence has been produced. No charges filed.
+    </p>
+
+    <p style="line-height: 1.7;">
+      What followed was not due process — but a media storm. Within 72 hours, #TraitorInGovernment trended nationwide. Anonymous sources claimed he “answered to Malawi before Pretoria.” His speeches were clipped. His accent mocked. His wife accused of collusion.
+    </p>
+
+    <div style="margin: 30px 0; padding: 15px; background: #2d1b1b; border-left: 4px solid #be2626; font-style: italic; color: #ff8a8a;">
+      “We’re not saying he’s guilty. We’re just asking questions.”<br>
+      — Senior Official, Anonymous Interview, March 2025
+    </div>
+
+    <!-- Dramatic Final Line -->
+    <p id="final-line" style="text-align: center; font-size: 1.3rem; margin-top: 30px; opacity: 0; transition: opacity 2s;"></p>
+
+  </div>
+
+  <!-- Embedded PDF -->
+  <div class="pdf-section">
+    <embed src="Leaked Conversation.pdf" type="application/pdf" />
+  </div>
+
+  <!-- Download PDF Button -->
+  <a href="Leaked Conversation.pdf" download class="download-btn">
+    DOWNLOAD LEAKED CONVERSATION (PDF)
+  </a>
+
+  <!-- Hidden Audio Element -->
+  <audio id="leaked-audio" src="leaked.mp3"></audio>
+
+  <!-- Play & Pause Buttons -->
+  <div class="audio-controls">
+    <button class="audio-btn" onclick="playAudio()">
+      ▶ PLAY LEAKED SPEECH
+    </button>
+    <button class="pause-btn" onclick="pauseAudio()">
+      ⏸ PAUSE AUDIO
+    </button>
+  </div>
+</section>
+
+<!-- Characters Section -->
+<section class="section" id="characters">
+  <h2>Characters</h2>
+  <div class="characters">
+
+    <!-- Khumo Khala -->
+    <div class="card" onclick="openCharacterModal('khumo')">
+      <img src="khumo.png" alt="Khumo Khala">
+      <h3>Khumo Khala</h3>
+      <p>Deputy Minister — a symbol of unity, destroyed by a campaign of lies.</p>
+    </div>
+
+    <!-- Dr. Lerato Mokoena -->
+    <div class="card" onclick="openCharacterModal('lerato')">
+      <img src="drlerato.png" alt="Dr. Lerato Mokoena">
+      <h3>Dr. Lerato Mokoena</h3>
+      <p>Public health advocate — caught in fabricated allegations of betrayal.</p>
+    </div>
+
+    <!-- Tshepo Nkosi -->
+    <div class="card" onclick="openCharacterModal('tshepo')">
+      <img src="tshepo.png" alt="Tshepo Nkosi">
+      <h3>Tshepo Nkosi</h3>
+      <p>Childhood friend & campaign manager — the architect of Khumo's downfall.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- Timeline Section -->
+<section class="section" id="timeline">
+  <h2>Timeline</h2>
+  <div class="timeline">
+    <div class="timeline-item left">
+      <div class="content">
+        <div class="date">January 2025</div>
+        <p>A whistleblower leaks confidential government documents implicating senior ministers.</p>
+      </div>
+    </div>
+    <div class="timeline-item right">
+      <div class="content">
+        <div class="date">March 2025</div>
+        <p>Massive public protests erupt, demanding accountability and transparency.</p>
+      </div>
+    </div>
+    <div class="timeline-item left">
+      <div class="content">
+        <div class="date">May 2025</div>
+        <p>Investigative journalists release exclusive interviews with insiders exposing the scandal.</p>
+      </div>
+    </div>
+    <div class="timeline-item right">
+      <div class="content">
+        <div class="date">June 2025</div>
+        <p>The deputy minister resigns amid growing political pressure.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Themes Section -->
+<div class="themes" id="themes">
+  <!-- Theme 1 -->
+  <div class="theme-card">
+    <div class="theme-icon">🌍</div>
+    <h3>Intra-African Xenophobia</h3>
+    <p>Khumo was born in Malawi but raised in Soweto — yet his loyalty is questioned. This theme explores how Black Africans from other countries are celebrated as "success stories" until they rise too high, then become targets of suspicion and scapegoating.</p>
+  </div>
+
+  <!-- Theme 2 -->
+  <div class="theme-card">
+    <div class="theme-icon">🎭</div>
+    <h3>Tokenism vs. Power</h3>
+    <p>Khumo is promoted not because he holds real influence, but because his image serves a narrative of unity. His downfall begins when he starts acting like a leader — not a symbol. This theme examines how representation without authority becomes performance.</p>
+  </div>
+
+  <!-- Theme 3 -->
+  <div class="theme-card">
+    <div class="theme-icon">📱</div>
+    <h3>Digital Disinformation</h3>
+    <p>A whisper campaign spreads through doctored audio clips, anonymous leaks, and viral rumors. Truth doesn't die loudly — it drowns in noise. This theme shows how modern manipulation happens not through violence, but through algorithms and timing.</p>
+  </div>
+
+  <!-- Theme 4 -->
+  <div class="theme-card">
+    <div class="theme-icon">⚖️</div>
+    <h3>Justice & Political Expediency</h3>
+    <p>The system demands accountability — but only when convenient. When investigations threaten powerful figures, they stall. When they target outsiders, they accelerate. This theme questions whether justice can exist when politics decides who is guilty before evidence is seen.</p>
+  </div>
+
+  <!-- Theme 5 -->
+  <div class="theme-card">
+    <div class="theme-icon">👥</div>
+    <h3>Belonging & Identity</h3>
+    <p>"Where are you really from?" Khumo speaks isiZulu, loves veldskoen, and quotes Mandela — but he's never fully accepted. This theme dives into what it means to belong in a nation built on both unity and division.</p>
+  </div>
+
+  <!-- Theme 6 -->
+  <div class="theme-card">
+    <div class="theme-icon">🔇</div>
+    <h3>Silencing Women's Voices</h3>
+    <p>Dr. Lerato speaks truth to power — so her integrity is attacked. Her marriage is politicized, her loyalty questioned. This theme highlights how women who challenge systems are often discredited personally rather than answered professionally.</p>
+  </div>
+</div>
+
+<!-- SA POLITICS EVIDENCE BOARD -->
+<section class="evidence-board" id="evidence">
+  <h2>Evidence Board</h2>
+  <div class="board-container">
+    
+    <!-- Evidence Item 1 -->
+    <div class="evidence-item" onclick="openModalEvidence(
+      'Tweet 1',
+      'Screenshots from closed groups show coordinated attacks on public figures labeled as &quot;foreign&quot;. Language shifts from debate to dehumanization.',
+      'evidence.png',
+      'image'
+    )">
+      <img src="evidence.png" alt="Telegram Chats">
+    </div>
+
+    <!-- Evidence Item 2 -->
+    <div class="evidence-item" onclick="openModalEvidence(
+      'The truth starts to leak, too late.',
+      'This account hints at the real motive behind Khumo’s downfall: he threatened powerful interests. The timing proves it, the scandal exploded right after he blocked the deal.',
+      'twitter1.png',
+      'image'
+    )">
+      <img src="twitter1.png" alt="Appointments Report">
+    </div>
+
+    <!-- Evidence Item 3 -->
+    <div class="evidence-item" onclick="openModalEvidence(
+      'Even critics miss the real story',
+      'While this user claims to seek truth, they still accept the affair narrative, showing how deeply the lie has taken root. Their focus on corruption distracts from the real issue: a coordinated campaign against Khumo.',
+      'twitter2.png',
+      'image'
+    )">
+      <img src="twitter2.png" alt="Media Analysis">
+    </div>
+
+    <!-- Evidence Item 4 -->
+    <div class="evidence-item" onclick="openModalEvidence(
+      'Nationalism weaponised as suspicion.',
+      'This tweet reflects the dangerous undercurrent of intra-African xenophobia, where shared identity is erased by birthplace. It shows how easily patriotism becomes exclusion.',
+      'twitter3.png',
+      'image'
+    )">
+      <img src="twitter3.png" alt="Whistleblower">
+    </div>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>© 2025 | A Documentary Experience<br><small>This is a work of fiction inspired by real social dynamics.</small></footer>
+
+<!-- Character Modal -->
+<div id="characterModal" class="character-modal">
+  <div class="character-modal-content">
+    <span class="close" onclick="closeCharacterModal()">&times;</span>
+    <div id="characterContent"></div>
+  </div>
+</div>
+
+<!-- General Evidence Modal -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+  // Animate final teaser line
+  setTimeout(() => {
+    const finalLine = document.getElementById('final-line');
+    finalLine.innerHTML = 'He resigned June 3rd.<br><span style="color:#03dac6">The story moved on.</span>';
+    finalLine.style.opacity = 1;
+  }, 2000);
+
+  // Get audio element
+  const audio = document.getElementById("leaked-audio");
+
+  // Play Audio Function
+  function playAudio() {
+    audio.play().then(() => {
+      console.log("Audio playing...");
+    }).catch(err => {
+      alert("Playback failed: " + err.message);
+    });
+  }
+
+  // Pause Audio Function
+  function pauseAudio() {
+    audio.pause();
+    console.log("Audio paused.");
+  }
+
+  // Open Modal with Evidence (Fixed for clarity and layout)
+  function openModalEvidence(title, desc, source, type) {
+    const modal = document.getElementById("modal");
+    const body = document.getElementById("modal-body");
+    
+    body.innerHTML = `<h3>${title}</h3><p>${desc}</p>`;
+    
+    if (type === 'image') {
+      body.innerHTML += `
+        <div style="margin-top: 15px; text-align: center;">
+          <img src="${source}" 
+               alt="${title}" 
+               style="max-width: 100%; max-height: 70vh; border: 2px solid #be2626; border-radius: 8px; box-shadow: 0 0 15px rgba(190, 38, 38, 0.4);">
+        </div>`;
+    } else if (type === 'audio') {
+      body.innerHTML += `
+        <div style="margin-top: 15px;">
+          <audio controls style="width: 100%;">
+            <source src="${source}" type="audio/mpeg">
+            Your browser does not support audio.
+          </audio>
+        </div>`;
+    }
+    
+    modal.style.display = "flex";
+  }
+
+  function closeModal() {
+    document.getElementById("modal").style.display = "none";
+  }
+
+  function openCharacterModal(characterId) {
+    const character = characters[characterId];
+    const content = document.getElementById('characterContent');
+    
+    let themeTags = '';
+    character.themes.forEach(tag => {
+      themeTags += `<span class="theme-tag">${tag}</span>`;
+    });
+    
+    content.innerHTML = `
+      <div class="character-header">
+        <img src="${character.image}" alt="${character.name}">
+        <div class="character-info">
+          <h3>${character.name}</h3>
+          <div class="character-role">${character.role}</div>
+        </div>
+      </div>
+      <div class="character-bio">
+        <p>${character.bio}</p>
+        <div class="character-quote">"${character.quote}"</div>
+        <h4>Background & Significance</h4>
+        <p>${character.background}</p>
+        <h4>Thematic Connections</h4>
+        <div class="theme-tags">
+          ${themeTags}
+        </div>
+      </div>
+    `;
+    
+    document.getElementById('characterModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCharacterModal() {
+    document.getElementById('characterModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+
+  // Close modals when clicking outside
+  window.onclick = function(event) {
+    if (event.target === document.getElementById("modal")) {
+      closeModal();
+    }
+    if (event.target === document.getElementById("characterModal")) {
+      closeCharacterModal();
+    }
+  };
+
+  // Close with Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeModal();
+      closeCharacterModal();
+    }
+  });
+
+  // Smooth scroll & active nav
+  document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      target.scrollIntoView({ behavior: 'smooth' });
+      document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Characters Data
+  const characters = {
+    khumo: {
+      name: "Khumo Khala",
+      role: "Deputy Minister",
+      image: "khumo.png",
+      bio: "Khumo was born in Malawi but brought up in Soweto. He is an iZulu-speaking South African who has served the nation long enough. As a charismatic politician and Deputy Minister in a coalition government, Khumo became emblematic of unity in South Africa until a whisper campaign destroyed his career and marriage. Celebrated as a success story, he was tokenized in leadership while never being fully trusted due to his foreign origins. The Black Africans born abroad are usually tokenized in leadership and powerbrokers - hailed as success stories until they become real targets of xenophobia.",
+      quote: "\"They said I answered to Blantyre before Pretoria.\"",
+      themes: ["Race & Identity", "Othering & Belonging", "Tokenism", "Intra-African Xenophobia", "Systemic Distrust"],
+      background: "Khumo is a Deputy Minister whose charisma and reformist image make him a symbol of national hope. His tragedy reflects how society's perception of a man can destroy him, not his imperfections. It is not jealousy that destroys Khumo but the gradual loss of self-worth that comes with othering on a regular basis. He starts to assume the truth: \"Perhaps I do not belong. Maybe I never did.\""
+    },
+    lerato: {
+      name: "Dr. Lerato Mokoena",
+      role: "Public Health Advocate & Anti-Corruption Activist",
+      image: "drlerato.png",
+      bio: "Wife to Khumo Khala and a prominent public health advocate, Dr. Lerato Mokoena represents the intelligent, morally fearless woman who breaks societal rules by marrying across perceived national boundaries. She is loyal and strong, but her voice is ultimately weaponized against her through false accusations of betrayal. She embodies the challenges faced by women in patriarchal systems where domestic life is politicized and dominated by male power structures.",
+      quote: "\"The truth mattered less than the story they wanted.\"",
+      themes: ["Gender & Power", "Patriarchal Standards", "Silencing of Women", "Political Weaponization", "Moral Courage"],
+      background: "Lerato challenges societal concepts of justice and meritocracy by exposing their vulnerability in the context of race and gender. As an anti-corruption activist, her integrity makes her a threat to those who benefit from systemic corruption, leading to her targeting in the whisper campaign. Her fate illustrates how when institutions fail to safeguard the weak, tragedy results."
+    },
+    tshepo: {
+      name: "Tshepo Nkosi",
+      role: "Childhood Friend & Campaign Manager",
+      image: "tshepo.png",
+      bio: "Tshepo Nkosi was Khumo's childhood friend and campaign manager who becomes resentful when Khumo promotes a younger advisor over him. Tshepo is cunning, jealous, and manipulative, but his methods reflect contemporary realities — he initiates a silent media war using doctored audio files, social media rumors, and psychological warfare. He doesn't necessarily believe the xenophobic rhetoric he employs; he uses it strategically, knowing that during periods of joblessness and insecurity, the blame game against outsiders works effectively.",
+      quote: "\"Every movement needs a scapegoat. I gave them one.\"",
+      themes: ["Manipulation of Truth", "Jealousy & Insecurity", "Digital Disinformation", "Political Strategy", "Moral Compromise"],
+      background: "Tshepo represents how insinuation rather than force is often how evil operates in modern society: lies spread slowly, then suddenly. His actions reflect actual politics where leaders create enemies to distract from their own failures. He is the architect of Khumo's downfall, using the existing undercurrents of xenophobia in South African society to fuel his personal revenge, making him a reflection of how systemic bias cannot be eliminated by love alone."
+    }
+  };
+</script>
+
+</body>
+</html>
